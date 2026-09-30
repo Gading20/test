@@ -42,9 +42,36 @@
                             <td>:</td>
                             <td>{{$data->jenis}}</td>
                         </tr>
+                        <tr>
+                            <th>Kategori</th>
+                            <td>:</td>
+                            <td>
+                                @if($data->kategori->isEmpty())
+                                -Tidak ada kategori-
+                                @else
+                                @foreach($data->kategori as $kat)
+                                <a href="{{url('kategori-items/view/'.$kat->kode)}}">{{ $kat->kode }} - {{ $kat->nama }}</a>@if(!$loop->last), @endif
+                                @endforeach
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Foto</th>
+                            <td>:</td>
+                            <td>
+                                @if(!empty($data->foto))
+                                <img src="{{ asset('storage/'.$data->foto) }}" alt="{{ $data->nama }}" class="img-thumbnail" style="max-height:200px;">
+                                @else
+                                -Tidak ada foto-
+                                @endif
+                            </td>
+                        </tr>
                     </table>
                     <a class="btn btn-info" href="{{url('master-items/form/edit')}}/{{$data->id}}">Edit</a>
-                    <a class="btn btn-danger" href="{{url('master-items/delete')}}/{{$data->id}}" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                    <form action="{{url('master-items/delete')}}/{{$data->id}}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </div>
             </div>
         </div>
